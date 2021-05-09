@@ -1,5 +1,6 @@
 package de.otto.beluga.amazonipranges.service;
 
+import de.otto.beluga.amazonipranges.TestHelper;
 import de.otto.beluga.amazonipranges.awsips.model.AwsIpPrefix;
 import de.otto.beluga.amazonipranges.awsips.model.AwsIpRanges;
 import de.otto.beluga.amazonipranges.awsips.service.AwsIpRangesService;
@@ -25,13 +26,13 @@ class IpRangeServiceTest {
     @DisplayName("Get Ip ranges returns list of ip ranges")
     public void getIpRangesReturnsListOfIpRanges(){
         // Given
-        when(awsIpRangesService.getIpRanges()).thenReturn(getAwsIpRanges());
+        when(awsIpRangesService.getIpRanges()).thenReturn(TestHelper.getAwsIpRanges());
 
         // When
-        List<String> ipRanges = ipRangeService.getIpRanges("EU");
+        String ipRanges = ipRangeService.getIpRanges("EU");
 
         // Then
-        assertThat(ipRanges, is(List.of("35.180.0.0/16")));
+        assertThat(ipRanges, is("35.180.0.0/16"));
 
     }
 
@@ -39,24 +40,20 @@ class IpRangeServiceTest {
     @DisplayName("get Ip ranges returns list of all ip ranges for keyword ALL")
     public void getIpRangesReturnListOfAllIpRanges(){
         // Given
-        when(awsIpRangesService.getIpRanges()).thenReturn(getAwsIpRanges());
+        when(awsIpRangesService.getIpRanges()).thenReturn(TestHelper.getAwsIpRanges());
 
         // When
-        List<String> ipRanges = ipRangeService.getIpRanges("ALL");
+        String ipRanges = ipRangeService.getIpRanges("ALL");
 
         // Then
-        assertThat(ipRanges, is(List.of(
-                "3.5.140.0/22",
-                "15.230.56.104/31",
-                "35.180.0.0/16"
-        )));
+        assertThat(ipRanges, is("3.5.140.0/22\n15.230.56.104/31\n35.180.0.0/16"));
     }
 
     @Test
     @DisplayName("Get ip ranges throw errors for invalid region value")
     public void getIpRangesThrowErrorForInvalidRegion(){
         // Given
-        when(awsIpRangesService.getIpRanges()).thenReturn(getAwsIpRanges());
+        when(awsIpRangesService.getIpRanges()).thenReturn(TestHelper.getAwsIpRanges());
 
         // Then
         assertThrows(ResponseStatusException.class, () -> {
@@ -64,31 +61,5 @@ class IpRangeServiceTest {
         });
     }
 
-    private static AwsIpRanges getAwsIpRanges() {
-        return AwsIpRanges
-                .builder()
-                .syncToken("awesomeSyncToken")
-                .prefixes(new AwsIpPrefix[]{
-                        AwsIpPrefix
-                                .builder()
-                                .ipPrefix("3.5.140.0/22")
-                                .region("ap-northeast-2")
-                                .networkBorderGroup("ap-northeast-2")
-                                .build(),
-                        AwsIpPrefix
-                                .builder()
-                                .ipPrefix("15.230.56.104/31")
-                                .region("us-east-1")
-                                .networkBorderGroup("us-east-1")
-                                .build(),
-                        AwsIpPrefix
-                                .builder()
-                                .ipPrefix("35.180.0.0/16")
-                                .region("eu-west-3")
-                                .networkBorderGroup("eu-west-3")
-                                .build()
-                })
-                .build();
-    }
 
 }

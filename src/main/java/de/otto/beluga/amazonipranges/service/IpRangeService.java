@@ -22,7 +22,7 @@ public class IpRangeService {
         this.awsIpRangesService = awsIpRangesService;
     }
 
-    public List<String> getIpRanges(String region){
+    public String getIpRanges(String region){
         if(!AcceptedRegions.isValidRegion(region)){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid region");
         }
@@ -33,14 +33,15 @@ public class IpRangeService {
             return Arrays
                     .stream(ipRanges)
                     .map(prefix -> prefix.getIpPrefix())
-                    .collect(Collectors.toList());
+                    .collect(Collectors.joining("\n"));
+
         }
 
         return Arrays
                 .stream(ipRanges)
                 .filter(prefix -> prefix.getRegion().contains(region.toLowerCase()))
                 .map(prefix -> prefix.getIpPrefix())
-                .collect(Collectors.toList());
+                .collect(Collectors.joining("\n"));
 
     }
 }
