@@ -1,5 +1,6 @@
 package de.otto.beluga.amazonipranges.awsips.service;
 
+import de.otto.beluga.amazonipranges.TestHelper;
 import de.otto.beluga.amazonipranges.awsips.model.AwsIpPrefix;
 import de.otto.beluga.amazonipranges.awsips.model.AwsIpRanges;
 import org.hamcrest.Matchers;
@@ -26,13 +27,13 @@ class AwsIpRangesServiceTest {
     @DisplayName("Get ip ranges should return return aws ip ranges")
     public void getIpRangesShouldReturnAwsIpRanges() {
         // Given
-        when(restTemplate.getForEntity(ipRangeUrl, AwsIpRanges.class)).thenReturn(ResponseEntity.ok(getAwsIpRanges()));
+        when(restTemplate.getForEntity(ipRangeUrl, AwsIpRanges.class)).thenReturn(ResponseEntity.ok(TestHelper.getAwsIpRanges()));
 
         // When
         AwsIpRanges ipRanges = awsIpRangesService.getIpRanges();
 
         // Then
-        assertThat(ipRanges, is(getAwsIpRanges()));
+        assertThat(ipRanges, is(TestHelper.getAwsIpRanges()));
 
     }
 
@@ -48,31 +49,5 @@ class AwsIpRangesServiceTest {
         });
     }
 
-    private static AwsIpRanges getAwsIpRanges() {
-        return AwsIpRanges
-                .builder()
-                .syncToken("awesomeSyncToken")
-                .prefixes(new AwsIpPrefix[]{
-                        AwsIpPrefix
-                                .builder()
-                                .ipPrefix("3.5.140.0/22")
-                                .region("ap-northeast-2")
-                                .networkBorderGroup("ap-northeast-2")
-                                .build(),
-                        AwsIpPrefix
-                                .builder()
-                                .ipPrefix("15.230.56.104/31")
-                                .region("us-east-1")
-                                .networkBorderGroup("us-east-1")
-                                .build(),
-                        AwsIpPrefix
-                                .builder()
-                                .ipPrefix("35.180.0.0/16")
-                                .region("eu-west-3")
-                                .networkBorderGroup("eu-west-3")
-                                .build()
-                })
-                .build();
-    }
 
 }
