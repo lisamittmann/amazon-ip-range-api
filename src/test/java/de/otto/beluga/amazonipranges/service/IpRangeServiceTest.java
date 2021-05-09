@@ -1,14 +1,10 @@
 package de.otto.beluga.amazonipranges.service;
 
 import de.otto.beluga.amazonipranges.TestHelper;
-import de.otto.beluga.amazonipranges.awsips.model.AwsIpPrefix;
-import de.otto.beluga.amazonipranges.awsips.model.AwsIpRanges;
 import de.otto.beluga.amazonipranges.awsips.service.AwsIpRangesService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -29,7 +25,7 @@ class IpRangeServiceTest {
         when(awsIpRangesService.getIpRanges()).thenReturn(TestHelper.getAwsIpRanges());
 
         // When
-        String ipRanges = ipRangeService.getIpRanges("EU");
+        String ipRanges = ipRangeService.getIpRanges("eu");
 
         // Then
         assertThat(ipRanges, is("35.180.0.0/16"));

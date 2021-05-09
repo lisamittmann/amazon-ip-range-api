@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,13 +22,13 @@ public class IpRangeService {
     }
 
     public String getIpRanges(String region){
-        if(!AcceptedRegions.isValidRegion(region)){
+        if(!AcceptedRegions.isValidRegion(region.toUpperCase())){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid region");
         }
 
         AwsIpPrefix[] ipRanges = awsIpRangesService.getIpRanges().getPrefixes();
 
-        if(region.equals("ALL")){
+        if(region.equalsIgnoreCase("ALL")){
             return Arrays
                     .stream(ipRanges)
                     .map(prefix -> prefix.getIpPrefix())
