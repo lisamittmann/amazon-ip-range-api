@@ -2,7 +2,6 @@ package de.otto.beluga.amazonipranges.model;
 
 import org.springframework.stereotype.Repository;
 
-@Repository
 public enum AcceptedRegions {
     EU("EU"),
     US("US"),
