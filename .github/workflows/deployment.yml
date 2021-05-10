@@ -3,7 +3,7 @@ name: 'Deployment to GCP'
 on:
   push
 
-
+jobs:
   build-backend:
     name: "Build backend"
     needs: build-frontend
@@ -14,11 +14,6 @@ on:
         uses: actions/setup-java@v1
         with:
           java-version: 15
-      - name: Download frontend build
-        uses: actions/download-artifact@v2
-        with:
-          name: frontend-build
-          path: backend/src/main/resources/static
       - name: Set Up GCloud
         uses: google-github-actions/setup-gcloud@master
         with:
