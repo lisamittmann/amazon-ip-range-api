@@ -1,0 +1,30 @@
+name: 'Deployment to GCP'
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-backend:
+    name: "Build backend"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up JDK 15
+        uses: actions/setup-java@v1
+        with:
+          java-version: 15
+      - name: Set Up GCloud
+        uses: google-github-actions/setup-gcloud@master
+        with:
+          service_account_key: ${{ secrets.GOOGLE_CREDENTIALS }}
+          export_default_credentials: true
+      - name: Configure GCloud docker
+        run: |
+          gcloud auth configure-docker beluga-tech-challenge
+          gcloud config set project beluga-tech-challenge
+      - name: Build with jib
+        run: |
+          mvn compile jib:build
+          gcloud run deploy 'beluga-tech-challenge' --image=gcr.io/beluga-tech-challenge/aws-ip-ranges --platform=managed --region=europe-west1
