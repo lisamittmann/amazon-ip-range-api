@@ -25,4 +25,4 @@ jobs:
       - name: Build with jib
         run: |
           mvn compile jib:build
-          gcloud run deploy 'corona-diaries' --image=gcr.io/capstone-teddys-corona-diaries/teddys-corona-diaries --platform=managed --region=europe-west1
+          gcloud run deploy 'beluga-tech-challenge' --image=gcr.io/beluga-tech-challenge/aws-ip-ranges --platform=managed --region=europe-west1
